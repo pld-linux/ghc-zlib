@@ -1,4 +1,4 @@
-%define	pkgname	zlib
+%define		pkgname	zlib
 Summary:	Compression and decompression in the gzip and zlib formats
 Name:		ghc-%{pkgname}
 Version:	0.5.2.0
@@ -7,12 +7,11 @@ License:	BSD
 Group:		Development/Languages
 Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkgname}-%{version}.tar.gz
 # Source0-md5:	19859e241dc18ef1501a5d44d8523507
-URL:		http://hackage.haskell.org/package/%{pkgname}/
+URL:		http://hackage.haskell.org/package/zlib/
 BuildRequires:	ghc >= 6.12.3
+BuildRequires:	rpmbuild(macros) >= 1.608
 %requires_releq	ghc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		ghcdir		ghc-%(/usr/bin/ghc --numeric-version)
 
 %description
 This package provides a pure interface for compressing and
@@ -55,10 +54,10 @@ runhaskell Setup.hs register \
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/usr/bin/ghc-pkg recache
+%ghc_pkg_recache
 
 %postun
-/usr/bin/ghc-pkg recache
+%ghc_pkg_recache
 
 %files
 %defattr(644,root,root,755)
