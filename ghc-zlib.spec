@@ -1,12 +1,12 @@
 %define		pkgname	zlib
 Summary:	Compression and decompression in the gzip and zlib formats
 Name:		ghc-%{pkgname}
-Version:	0.5.2.0
-Release:	4
+Version:	0.5.3.1
+Release:	1
 License:	BSD
 Group:		Development/Languages
 Source0:	http://hackage.haskell.org/packages/archive/%{pkgname}/%{version}/%{pkgname}-%{version}.tar.gz
-# Source0-md5:	19859e241dc18ef1501a5d44d8523507
+# Source0-md5:	8fb2988b112e38d04a527b892f770507
 URL:		http://hackage.haskell.org/package/zlib/
 BuildRequires:	ghc >= 6.12.3
 BuildRequires:	rpmbuild(macros) >= 1.608
