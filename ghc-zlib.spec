@@ -6,32 +6,27 @@
 Summary:	Compression and decompression in the gzip and zlib formats
 Summary(pl.UTF-8):	Kompresja i dekompresja formatów gzip i zlib
 Name:		ghc-%{pkgname}
-Version:	0.5.4.1
+Version:	0.6.2.1
 Release:	1
 License:	BSD
 Group:		Development/Languages
 #Source0Download: http://hackage.haskell.org/package/zlib
 Source0:	http://hackage.haskell.org/package/%{pkgname}-%{version}/%{pkgname}-%{version}.tar.gz
-# Source0-md5:	d0d10786d2bbd1d401a8b28a83e88475
+# Source0-md5:	a6f9a3a04f2c026863946f943b9f2102
+Patch0:		ghc-8.10.patch
 URL:		http://hackage.haskell.org/package/zlib
 BuildRequires:	ghc >= 6.12.3
 BuildRequires:	ghc-base >= 3
-BuildRequires:	ghc-base < 5
 BuildRequires:	ghc-bytestring >= 0.9
-BuildRequires:	ghc-bytestring < 0.12
 %if %{with prof}
 BuildRequires:	ghc-prof >= 6.12.3
 BuildRequires:	ghc-base-prof >= 3
-BuildRequires:	ghc-base-prof < 5
 BuildRequires:	ghc-bytestring-prof >= 0.9
-BuildRequires:	ghc-bytestring-prof < 0.12
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.608
 %requires_eq	ghc
 Requires:	ghc-base >= 3
-Requires:	ghc-base < 5
 Requires:	ghc-bytestring >= 0.9
-Requires:	ghc-bytestring < 0.12
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 # debuginfo is not useful for ghc
@@ -66,9 +61,7 @@ Summary(pl.UTF-8):	Biblioteka profilująca %{pkgname} dla GHC
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	ghc-base-prof >= 3
-Requires:	ghc-base-prof < 5
 Requires:	ghc-bytestring-prof >= 0.9
-Requires:	ghc-bytestring-prof < 0.12
 
 %description prof
 Profiling %{pkgname} library for GHC. Should be installed when
@@ -91,6 +84,7 @@ Dokumentacja w formacie HTML dla pakietu ghc %{pkgname}.
 
 %prep
 %setup -q -n %{pkgname}-%{version}
+%patch0 -p1
 
 %build
 runhaskell Setup.hs configure -v2 \
@@ -131,18 +125,21 @@ rm -rf $RPM_BUILD_ROOT
 %doc LICENSE
 %{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/HSzlib-%{version}.o
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}.a
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*.so
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*.a
+%exclude %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*_p.a
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression/*.dyn_hi
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression/Zlib
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression/Zlib/*.hi
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression/Zlib/*.dyn_hi
 
 %if %{with prof}
 %files prof
 %defattr(644,root,root,755)
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}_p.a
+%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*_p.a
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression/*.p_hi
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec/Compression/Zlib/*.p_hi
 %endif
