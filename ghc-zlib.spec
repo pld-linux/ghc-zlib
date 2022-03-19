@@ -7,7 +7,7 @@ Summary:	Compression and decompression in the gzip and zlib formats
 Summary(pl.UTF-8):	Kompresja i dekompresja formatów gzip i zlib
 Name:		ghc-%{pkgname}
 Version:	0.6.2.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		Development/Languages
 #Source0Download: http://hackage.haskell.org/package/zlib
