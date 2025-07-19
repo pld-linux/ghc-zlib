@@ -15,17 +15,20 @@ Source0:	http://hackage.haskell.org/package/%{pkgname}-%{version}/%{pkgname}-%{v
 # Source0-md5:	a6f9a3a04f2c026863946f943b9f2102
 Patch0:		ghc-8.10.patch
 URL:		http://hackage.haskell.org/package/zlib
-BuildRequires:	ghc >= 6.12.3
-BuildRequires:	ghc-base >= 3
+# for ghc < 7.6 also ghc-prim
+BuildRequires:	ghc >= 7.6
+BuildRequires:	ghc-base >= 4
 BuildRequires:	ghc-bytestring >= 0.9
+BuildRequires:	ghc-bytestring < 0.11
 %if %{with prof}
 BuildRequires:	ghc-prof >= 6.12.3
-BuildRequires:	ghc-base-prof >= 3
+BuildRequires:	ghc-base-prof >= 4
 BuildRequires:	ghc-bytestring-prof >= 0.9
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.608
+BuildRequires:	zlib-devel
 %requires_eq	ghc
-Requires:	ghc-base >= 3
+Requires:	ghc-base >= 4
 Requires:	ghc-bytestring >= 0.9
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -60,7 +63,7 @@ Summary:	Profiling %{pkgname} library for GHC
 Summary(pl.UTF-8):	Biblioteka profilująca %{pkgname} dla GHC
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	ghc-base-prof >= 3
+Requires:	ghc-base-prof >= 4
 Requires:	ghc-bytestring-prof >= 0.9
 
 %description prof
@@ -122,10 +125,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc LICENSE
+%doc LICENSE changelog
 %{_libdir}/%{ghcdir}/package.conf.d/%{pkgname}.conf
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}
-%{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*.so
+%attr(755,root,root) %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*.so
 %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*.a
 %exclude %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/libHSzlib-%{version}-*_p.a
 %dir %{_libdir}/%{ghcdir}/%{pkgname}-%{version}/Codec
